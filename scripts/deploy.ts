@@ -34,16 +34,18 @@ async function generateCallData(): Promise<ICallData> {
     inputs = inputs + p256(pub[i]);
   }
 
-  let pi_a = [p256(proof.pi_a[0]), p256(proof.pi_a[1])]
-  let pi_b = [[p256(proof.pi_b[0][1]), p256(proof.pi_b[0][0])], [p256(proof.pi_b[1][1]), p256(proof.pi_b[1][0])]]
-  let pi_c = [p256(proof.pi_c[0]), p256(proof.pi_c[1])]
-  let input = [inputs]
+  let pi_a = [p256(proof.pi_a[0]), p256(proof.pi_a[1])];
+  let pi_b = [
+    [p256(proof.pi_b[0][1]), p256(proof.pi_b[0][0])],
+    [p256(proof.pi_b[1][1]), p256(proof.pi_b[1][0])],
+  ];
+  let pi_c = [p256(proof.pi_c[0]), p256(proof.pi_c[1])];
+  let input = [inputs];
 
   return { pi_a, pi_b, pi_c, input };
 }
 
 async function generateProof() {
-
   // read input parameters
   const inputData = fs.readFileSync(BASE_PATH + "input.json", "utf8");
   const input = JSON.parse(inputData);
@@ -53,36 +55,42 @@ async function generateProof() {
     input,
     BASE_PATH + "out/circuit.wasm",
     BASE_PATH + "out/circuit.wtns"
-  )
+  );
 
   // calculate proof
   const proof = await snarkjs.groth16.prove(
     BASE_PATH + "out/multiplier.zkey",
     BASE_PATH + "out/circuit.wtns"
-  )
+  );
 
   // write proof to file
-  fs.writeFileSync(BASE_PATH + "out/proof.json", JSON.stringify(proof, null, 1));
+  fs.writeFileSync(
+    BASE_PATH + "out/proof.json",
+    JSON.stringify(proof, null, 1)
+  );
 
-  return proof
+  return proof;
 }
 
 async function main() {
   // deploy contract
-  const Verifier = await ethers.getContractFactory("./contracts/MultiplierVerifier.sol:Verifier");
+  console.log("Deploying...");
+  const Verifier = await ethers.getContractFactory(
+    "./contracts/MultiplierVerifier.sol:Verifier"
+  );
   const verifier = await Verifier.deploy();
   await verifier.deployed();
 
   console.log(`Verifier deployed to ${verifier.address}`);
 
   // generate proof call data
-  const {pi_a, pi_b, pi_c, input} = await generateCallData();
+  const { pi_a, pi_b, pi_c, input } = await generateCallData();
 
   // verify proof on contract
   //@ts-ignore
-  const tx = await verifier.verifyProof(pi_a, pi_b, pi_c, input)
-  
-  console.log(`Verifier result: ${tx}`)
+  const tx = await verifier.verifyProof(pi_a, pi_b, pi_c, input);
+
+  console.log(`Verifier result: ${tx}`);
   console.assert(tx == true, "Proof verification failed!");
 
   process.exit(0);
