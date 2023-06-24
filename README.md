@@ -3,10 +3,15 @@
 This project utilizes the hardhat-circom library called Zardkat for writing Zero-knowledge circuits, generating circuits & also deploying verifiers.
 
 Various templates used in circuit.circom file are
-├── binaryCheck --> Validates if the given input is a binary
-├── And2 --> logical equivalent of AND gate
+
+├── binaryCheck --> Validates if the given input is a binary.
+
+├── And2 --> logical equivalent of AND gate.
+
 ├── Not --> logical equivalent of NOT gate
+
 ├── Or2 --> logical equivalent of OR gate
+
 ├── Mainer2 --> execution template or main component
 
 ### Execution Template: Mainer2()
@@ -40,6 +45,7 @@ template Mainer2(){
 ### input.json file
 
 in1 == 0 == A
+
 in2 == 1 == B
 
 ```json
