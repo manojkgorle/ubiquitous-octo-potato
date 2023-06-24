@@ -1,3 +1,54 @@
+# All starter code is available after this explanation.
+
+This project utilizes the hardhat-circom library called Zardkat for writing Zero-knowledge circuits, generating circuits & also deploying verifiers.
+
+Various templates used in circuit.circom file are
+├── binaryCheck --> Validates if the given input is a binary
+├── And2 --> logical equivalent of AND gate
+├── Not --> logical equivalent of NOT gate
+├── Or2 --> logical equivalent of OR gate
+├── Mainer2 --> execution template or main component
+
+### Execution Template: Mainer2()
+
+in1 ~ A & in2 ~ B
+
+input signals in1 and in2 are captured
+And, Or, Not functions are loaded as components ander, orer, noter
+And of in1 & in2 are calculated and output is stored in orer.in1
+Not of in2 calculated and output is given to orer.in2
+The function output is calculated finally
+```circom
+template Mainer2(){
+   // Declaration of signals and components
+   signal input in1;
+   signal input in2;
+   signal output out;
+   component ander = And2();
+   component orer = Or2();
+   component noter = Not();
+   //And and Not values
+   ander.in1 <== in1;
+   ander.in2 <== in2;
+   noter.in1 <== in1;
+   orer.in1 <== ander.out;
+   orer.in2 <== noter.out;
+   out <== orer.out;
+
+}
+```
+### input.json file
+
+in1 == 0 == A
+in2 == 1 == B
+
+```json
+{
+  "in1": "0",
+  "in2": "1"
+}
+```
+
 # zardkat 🐱
 
 A [hardhat-circom](https://github.com/projectsophon/hardhat-circom) template to generate zero-knowledge circuits, proofs, and solidity verifiers
@@ -5,23 +56,6 @@ A [hardhat-circom](https://github.com/projectsophon/hardhat-circom) template to 
 ## Quick Start
 Compile the Multiplier2() circuit and verify it against a smart contract verifier
 
-```
-pragma circom 2.0.0;
-
-/*This circuit template checks that c is the multiplication of a and b.*/  
-
-template Multiplier2 () {  
-
-   // Declaration of signals.  
-   signal input a;  
-   signal input b;  
-   signal output c;  
-
-   // Constraints.  
-   c <== a * b;  
-}
-component main = Multiplier2();
-```
 ### Install
 `npm i`
 
