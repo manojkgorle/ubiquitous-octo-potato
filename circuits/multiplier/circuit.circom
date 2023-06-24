@@ -9,6 +9,15 @@ template binaryCheck () {
    in * (in-1) === 0;
    out <== in;
 }
+template Multiplier2(){
+   //Declaration of signals
+   signal input in1;
+   signal input in2;
+   signal output out;
+
+   //Statements.
+   out <== in1 * in2;
+}
 
 template And2(){
    //Declaration of signals and components.
