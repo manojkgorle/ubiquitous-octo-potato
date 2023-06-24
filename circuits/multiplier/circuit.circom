@@ -1,15 +1,5 @@
 pragma circom 2.0.0;
 
-template Multiplier2(){
-   //Declaration of signals
-   signal input in1;
-   signal input in2;
-   signal output out;
-
-   //Statements.
-   out <== in1 * in2;
-}
-
 template binaryCheck () {
    //Declaration of signals.
    signal input in;
@@ -67,7 +57,7 @@ template Mainer2(){
    //and and not values
    ander.in1 <== in1;
    ander.in2 <== in2;
-   noter.in1 <== in1;
+   noter.in1 <== in2;
    orer.in1 <== ander.out;
    orer.in2 <== noter.out;
    out <== orer.out;

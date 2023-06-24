@@ -7,8 +7,10 @@ import circuits = require("./circuits.config.json");
 
 // set env var to the root of the project
 process.env.BASE_PATH = __dirname;
-const PRIVATE_KEY = process.env.PRIVATE_KEY;
-const GOERLI_RPC_URL = process.env.GOERLI_RPC_URL;
+const PRIVATE_KEY =
+  "0x386d0fbabcb5ddd1e1d8974c3247b9d3a1f0ad449958934625494e9ae9f06ca0";
+const GOERLI_RPC_URL =
+  "https://eth-goerli.g.alchemy.com/v2/97Ulo0kNVx3z6yt7PbJkjFVYo30tfu5e";
 // tasks
 import "./tasks/newcircuit.ts";
 

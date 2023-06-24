@@ -73,18 +73,19 @@ async function generateProof() {
 }
 
 async function main() {
-  // deploy contract
+  //deploy contract
   console.log("Deploying...");
-  const Verifier = await ethers.getContractFactory(
-    "./contracts/MultiplierVerifier.sol:Verifier"
-  );
-  const verifier = await Verifier.deploy();
-  await verifier.deployed();
 
+  const verifier = await ethers.deployContract("Verifier");
+  // const verifier = await ethers.getContractAt(
+  //   "Verifier",
+  //   "0xfB60903079536A5C623F8A2f35D5b09ba77d70a8"
+  // );
   console.log(`Verifier deployed to ${verifier.address}`);
 
   // generate proof call data
   const { pi_a, pi_b, pi_c, input } = await generateCallData();
+  //console.log(pi_a, pi_b, pi_c, input);
 
   // verify proof on contract
   //@ts-ignore
